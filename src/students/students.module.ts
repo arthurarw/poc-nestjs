@@ -3,10 +3,11 @@ import { StudentsService } from './students.service';
 import { StudentsController } from './students.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Student } from './entities/student.entity';
+import { HateoasStudents } from 'src/core/hateoas/students-hateoas';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Student])],
   controllers: [StudentsController],
-  providers: [StudentsService],
+  providers: [StudentsService, HateoasStudents],
 })
 export class StudentsModule {}

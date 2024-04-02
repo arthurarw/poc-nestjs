@@ -3900,6 +3900,13 @@ nestjs-typeorm-paginate@^4.0.4:
   resolved "https://registry.yarnpkg.com/nestjs-typeorm-paginate/-/nestjs-typeorm-paginate-4.0.4.tgz#cc705100dc19a1ed4014830930180d0ab650560a"
   integrity sha512-arinWDc78wPV/EYWMmLYyeMSE5Lae1FHWD/2QpOdTmHaOVqK4PYf19EqZBqT9gbbPugkNW9JAMz3G2WmvSgR/A==
 
+nestjs-url-generator@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/nestjs-url-generator/-/nestjs-url-generator-1.0.2.tgz#4fc64e8819660e229ea8042b4885b6468ae989da"
+  integrity sha512-YTnj7pbMzSiMtPlZ2rcEoXpyQxXxCCuEsgCS4NfbWWyi/0B52T6yMpzHvhxb6MCo85vJzLa4Pmx3b/GE4YLPZA==
+  dependencies:
+    qs "^6.11.0"
+
 node-abort-controller@^3.0.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/node-abort-controller/-/node-abort-controller-3.1.1.tgz#a94377e964a9a37ac3976d848cb5c765833b8548"

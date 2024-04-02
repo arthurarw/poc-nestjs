@@ -9,6 +9,7 @@ import { ClassesModule } from './classes/classes.module';
 import { join } from 'path';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './commons/filters/http-exception.filter';
+import { UrlGeneratorModule } from 'nestjs-url-generator';
 
 @Module({
   imports: [
@@ -26,6 +27,9 @@ import { HttpExceptionFilter } from './commons/filters/http-exception.filter';
     UsersModule,
     StudentsModule,
     ClassesModule,
+    UrlGeneratorModule.forRoot({
+      appUrl: 'http://localhost:3000',
+    }),
   ],
   controllers: [AppController],
   providers: [
