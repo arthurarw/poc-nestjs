@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
@@ -21,8 +22,9 @@ export class StudentsController {
   }
 
   @Get()
-  async findAll() {
-    return await this.studentsService.findAll();
+  async findAll(@Query('page') page = 1, @Query('limit') limit = 2) {
+    limit = limit > 100 ? 10 : limit;
+    return await this.studentsService.findAll({ page, limit });
   }
 
   @Get(':id')

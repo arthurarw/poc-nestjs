@@ -7,6 +7,8 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { StudentsModule } from './students/students.module';
 import { ClassesModule } from './classes/classes.module';
 import { join } from 'path';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpExceptionFilter } from './commons/filters/http-exception.filter';
 
 @Module({
   imports: [
@@ -26,6 +28,12 @@ import { join } from 'path';
     ClassesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}

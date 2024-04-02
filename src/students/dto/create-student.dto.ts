@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   IsEnum,
   IsNotEmpty,
@@ -15,6 +16,7 @@ export class CreateStudentDto {
   @IsNotEmpty({ message: 'Name is required' })
   @IsString({ message: 'Name must be a string' })
   @Length(3, 255, { message: 'Name must be at least 3 characters' })
+  @Transform(({ value }) => value.trim())
   name: string;
 
   @IsNotEmpty({ message: 'Gender is required' })

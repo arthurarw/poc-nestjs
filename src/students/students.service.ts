@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Student } from './entities/student.entity';
 import { Repository } from 'typeorm';
+import { StudentNotFoundException } from './exceptions/student-not-found.exception';
+import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class StudentsService {
@@ -16,16 +18,25 @@ export class StudentsService {
     return await this.repository.save(student);
   }
 
-  async findAll() {
-    return await this.repository.find({
-      relations: {
-        class: true,
-      },
-    });
+  async findAll(options: IPaginationOptions) {
+    const query = await this.repository
+      .createQueryBuilder('students')
+      .leftJoinAndSelect('students.class', 'class')
+      .orderBy('students.id', 'ASC');
+
+    return await paginate(query, options);
   }
 
   async findOne(id: number) {
-    return await this.repository.findOneBy({ id: id });
+    try {
+      return await this.repository.findOneByOrFail({ id: id });
+    } catch (error) {
+      if (error.name === 'EntityNotFoundError') {
+        throw new StudentNotFoundException();
+      }
+
+      throw new InternalServerErrorException();
+    }
   }
 
   async update(id: number, updateStudentDto: UpdateStudentDto) {
@@ -33,6 +44,11 @@ export class StudentsService {
   }
 
   async remove(id: number) {
-    return await this.repository.delete({ id: id });
+    const response = await this.repository.delete({ id: id });
+    if (response.affected === 0) {
+      throw new StudentNotFoundException();
+    }
+
+    return response;
   }
 }
