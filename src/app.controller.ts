@@ -1,12 +1,16 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
+import { HateoasIndex } from './core/hateoas/index-hateoas';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private hateoasIndex: HateoasIndex,
+  ) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  index() {
+    return this.hateoasIndex.generateLinkHateoas();
   }
 }

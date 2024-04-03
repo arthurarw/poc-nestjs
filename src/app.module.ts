@@ -10,6 +10,7 @@ import { join } from 'path';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './commons/filters/http-exception.filter';
 import { UrlGeneratorModule } from 'nestjs-url-generator';
+import { HateoasIndex } from './core/hateoas/index-hateoas';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { UrlGeneratorModule } from 'nestjs-url-generator';
   controllers: [AppController],
   providers: [
     AppService,
+    HateoasIndex,
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,

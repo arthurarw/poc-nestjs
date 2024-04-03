@@ -14,21 +14,21 @@ export class HateoasStudents extends HateoasBase {
 
     this.addLinks(
       'GET',
-      'self',
+      'student_details',
       StudentsController,
       StudentsController.prototype.findOne,
       params,
     );
     this.addLinks(
       'PATCH',
-      'self',
+      'student_update',
       StudentsController,
       StudentsController.prototype.update,
       params,
     );
     this.addLinks(
       'DELETE',
-      'self',
+      'student_delete',
       StudentsController,
       StudentsController.prototype.remove,
       params,
