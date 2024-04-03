@@ -64,4 +64,16 @@ export class UsersService {
 
     return { message: 'User deleted successfully', success: true };
   }
+
+  async findByEmail(email: string) {
+    try {
+      return await this.repository.findOneByOrFail({ email: email });
+    } catch (error) {
+      if (error.name === 'EntityNotFoundError') {
+        throw new NotFoundException();
+      }
+
+      throw new InternalServerErrorException();
+    }
+  }
 }
