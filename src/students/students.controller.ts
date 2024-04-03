@@ -13,7 +13,9 @@ import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { ResponseStudentDto } from './dto/response-student.dto';
 import { HateoasStudents } from 'src/core/hateoas/students-hateoas';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('students')
 @Controller('students')
 export class StudentsController {
   constructor(
