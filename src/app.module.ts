@@ -11,6 +11,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './commons/filters/http-exception.filter';
 import { UrlGeneratorModule } from 'nestjs-url-generator';
 import { HateoasIndex } from './core/hateoas/index-hateoas';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { HateoasIndex } from './core/hateoas/index-hateoas';
     UrlGeneratorModule.forRoot({
       appUrl: 'http://localhost:3000',
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
