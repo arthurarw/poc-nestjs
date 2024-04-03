@@ -40,7 +40,12 @@ export class StudentsService {
   }
 
   async update(id: number, updateStudentDto: UpdateStudentDto) {
-    return await this.repository.update(id, updateStudentDto);
+    const response = await this.repository.update(id, updateStudentDto);
+    if (response.affected === 0) {
+      throw new StudentNotFoundException();
+    }
+
+    return { message: 'Student updated successfully', success: true };
   }
 
   async remove(id: number) {
@@ -49,6 +54,6 @@ export class StudentsService {
       throw new StudentNotFoundException();
     }
 
-    return response;
+    return { message: 'Student deleted successfully', success: true };
   }
 }
