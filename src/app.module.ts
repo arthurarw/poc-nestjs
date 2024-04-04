@@ -17,7 +17,7 @@ import { AuthModule } from './auth/auth.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: '172.23.0.3',
+      host: '172.23.0.2',
       port: 3306,
       username: 'root',
       password: 'root',
@@ -26,13 +26,13 @@ import { AuthModule } from './auth/auth.module';
       synchronize: true,
       namingStrategy: new SnakeNamingStrategy(),
     }),
+    AuthModule,
     UsersModule,
     StudentsModule,
     ClassesModule,
     UrlGeneratorModule.forRoot({
       appUrl: 'http://localhost:3000',
     }),
-    AuthModule,
   ],
   controllers: [AppController],
   providers: [

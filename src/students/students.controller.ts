@@ -14,6 +14,7 @@ import { UpdateStudentDto } from './dto/update-student.dto';
 import { ResponseStudentDto } from './dto/response-student.dto';
 import { HateoasStudents } from 'src/core/hateoas/students-hateoas';
 import { ApiTags } from '@nestjs/swagger';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @ApiTags('students')
 @Controller('students')
@@ -23,6 +24,7 @@ export class StudentsController {
     private studentsHateoas: HateoasStudents,
   ) {}
 
+  @Public()
   @Post()
   async create(@Body() createStudentDto: CreateStudentDto) {
     const response: ResponseStudentDto =
