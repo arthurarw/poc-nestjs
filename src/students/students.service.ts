@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,11 +10,16 @@ import { Student } from './entities/student.entity';
 import { Repository } from 'typeorm';
 import { StudentNotFoundException } from './exceptions/student-not-found.exception';
 import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
+import { StudentClass } from 'src/student-classes/entities/student-classes.entity';
+import { Class } from 'src/classes/entities/class.entity';
 
 @Injectable()
 export class StudentsService {
   constructor(
     @InjectRepository(Student) private repository: Repository<Student>,
+    @InjectRepository(Class) private classRepository: Repository<Class>,
+    @InjectRepository(StudentClass)
+    private studentClassRepository: Repository<StudentClass>,
   ) {}
 
   async create(createStudentDto: CreateStudentDto) {
@@ -55,5 +64,28 @@ export class StudentsService {
     }
 
     return { message: 'Student deleted successfully', success: true };
+  }
+
+  async createStudentClass(createStudentClass: {
+    studentId: number;
+    classId: number;
+  }) {
+    try {
+      await this.repository.findOneByOrFail({
+        id: createStudentClass.studentId,
+      });
+
+      await this.classRepository.findOneByOrFail({
+        id: createStudentClass.classId,
+      });
+
+      await this.studentClassRepository.save(createStudentClass);
+    } catch (error) {
+      if (error.name === 'EntityNotFoundError') {
+        throw new NotFoundException();
+      }
+
+      throw new InternalServerErrorException();
+    }
   }
 }

@@ -3,8 +3,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -20,9 +20,22 @@ export class Student {
   @Column({ nullable: false, length: 255 })
   gender: string;
 
-  @ManyToOne(() => Class, (c) => c.student)
-  @JoinColumn({ name: 'class_id' })
-  class: Class;
+  @ManyToMany(() => Class, (c) => c.students, {
+    onDelete: 'NO ACTION',
+    onUpdate: 'NO ACTION',
+  })
+  @JoinTable({
+    name: 'student_classes',
+    joinColumn: {
+      name: 'student_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'class_id',
+      referencedColumnName: 'id',
+    },
+  })
+  class?: Class[];
 
   @CreateDateColumn({
     type: 'timestamp',

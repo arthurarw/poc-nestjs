@@ -11,7 +11,6 @@ import {
 import { StudentsService } from './students.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
-import { ResponseStudentDto } from './dto/response-student.dto';
 import { HateoasStudents } from 'src/core/hateoas/students-hateoas';
 import { ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/auth/decorators/public.decorator';
@@ -27,32 +26,18 @@ export class StudentsController {
   @Public()
   @Post()
   async create(@Body() createStudentDto: CreateStudentDto) {
-    const response: ResponseStudentDto =
-      await this.studentsService.create(createStudentDto);
-    response.links = this.studentsHateoas.generateLinkHateoas(response.id);
-
-    return response;
+    return await this.studentsService.create(createStudentDto);
   }
 
   @Get()
   async findAll(@Query('page') page = 1, @Query('limit') limit = 2) {
     limit = limit > 100 ? 10 : limit;
-    const students = await this.studentsService.findAll({ page, limit });
-    students.items.map((student) => {
-      const response: ResponseStudentDto = student;
-      response.links = this.studentsHateoas.generateLinkHateoas(student.id);
-      return response;
-    });
-
-    return students;
+    return await this.studentsService.findAll({ page, limit });
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    const response: ResponseStudentDto =
-      await this.studentsService.findOne(+id);
-    response.links = this.studentsHateoas.generateLinkHateoas(response.id);
-    return response;
+    return await this.studentsService.findOne(+id);
   }
 
   @Patch(':id')
@@ -66,5 +51,12 @@ export class StudentsController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.studentsService.remove(+id);
+  }
+
+  @Post()
+  async createStudentClass(
+    @Body() createStudentClass: { studentId: number; classId: number },
+  ) {
+    await this.studentsService.createStudentClass(createStudentClass);
   }
 }

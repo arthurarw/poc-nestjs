@@ -3,7 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -15,9 +15,6 @@ export class Class {
 
   @Column({ nullable: false, length: 255 })
   description: string;
-
-  @OneToMany(() => Student, (student) => student.class)
-  student: Student;
 
   @CreateDateColumn({
     type: 'timestamp',
@@ -31,4 +28,10 @@ export class Class {
     onUpdate: 'CURRENT_TIMESTAMP(6)',
   })
   updated_at: Date;
+
+  @ManyToMany(() => Student, (student) => student.class, {
+    onDelete: 'NO ACTION',
+    onUpdate: 'NO ACTION',
+  })
+  students?: Student[];
 }

@@ -5,6 +5,6 @@ export class ResponseStudentDto {
   id: number;
   name: string;
   gender: string;
-  class: Class;
+  class: Class[];
   links?: HateoasLinks[];
 }

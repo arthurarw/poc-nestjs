@@ -1,14 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import {
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-  Length,
-  Min,
-} from 'class-validator';
-import { Class } from 'src/classes/entities/class.entity';
+import { IsEnum, IsNotEmpty, IsString, Length } from 'class-validator';
 
 export type GenderOptions = 'male' | 'female';
 export const GenderOptionsArr: GenderOptions[] = ['male', 'female'];
@@ -26,10 +18,4 @@ export class CreateStudentDto {
   @IsString({ message: 'Gender must be a string' })
   @IsEnum(GenderOptionsArr)
   gender: string;
-
-  @ApiProperty()
-  @IsNotEmpty({ message: 'Class is required' })
-  @IsNumber({}, { message: 'Class must be a number' })
-  @Min(1)
-  class: Class;
 }

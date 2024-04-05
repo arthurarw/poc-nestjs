@@ -12,12 +12,13 @@ import { HttpExceptionFilter } from './commons/filters/http-exception.filter';
 import { UrlGeneratorModule } from 'nestjs-url-generator';
 import { HateoasIndex } from './core/hateoas/index-hateoas';
 import { AuthModule } from './auth/auth.module';
+import { StudentClassesModule } from './student-classes/student-classes.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: '172.23.0.2',
+      host: '172.23.0.3',
       port: 3306,
       username: 'root',
       password: 'root',
@@ -33,6 +34,7 @@ import { AuthModule } from './auth/auth.module';
     UrlGeneratorModule.forRoot({
       appUrl: 'http://localhost:3000',
     }),
+    StudentClassesModule,
   ],
   controllers: [AppController],
   providers: [
