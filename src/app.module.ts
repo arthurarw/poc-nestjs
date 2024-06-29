@@ -13,18 +13,20 @@ import { UrlGeneratorModule } from 'nestjs-url-generator';
 import { HateoasIndex } from './core/hateoas/index-hateoas';
 import { AuthModule } from './auth/auth.module';
 import { StudentClassesModule } from './student-classes/student-classes.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: '172.23.0.3',
-      port: 3306,
-      username: 'root',
-      password: 'root',
-      database: 'app_nestjs',
+      host: process.env.DB_HOST || 'localhost',
+      port: +process.env.DB_PORT || 3306,
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
       entities: [join(__dirname, '**/*entity.{ts,js}')],
-      synchronize: true,
+      synchronize: false,
       namingStrategy: new SnakeNamingStrategy(),
     }),
     AuthModule,

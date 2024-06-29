@@ -1,0 +1,45 @@
+services:
+  app:
+    build: .
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/home/node/app
+    networks:
+      - proc_nest
+    depends_on:
+      - db
+      - rabbitmq
+    environment:
+      RABBITMQ_URL: amqp://rabbitmq
+
+  db:
+    image: mysql:8.0.30-debian
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: nest
+    ports:
+      - 3308:3306
+    volumes:
+      - ./.docker/db:/var/lib/mysql
+    networks:
+      - proc_nest
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ~/.docker/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - proc_nest
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: pass
+
+networks:
+  proc_nest:
+    driver: bridge
